@@ -23,6 +23,8 @@ void ThreadPool::Create()
 				for(int i=0; i<m_thread_num; i++)
 				{
 								pthread_create(&m_tid[i], NULL, routine, (void *)this);
+								cout << "create thread success" << endl;
+								AddToIdleList(m_tid[i]);
 				}
 }
 

@@ -15,7 +15,7 @@ class Task
 												m_pri_data = pri_data;
 								}
 								virtual void run()=0;
-				private:
+				protected:
 								string	m_task_name;
 								void		*m_pri_data;
 };
