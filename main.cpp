@@ -12,7 +12,7 @@ class MyTask:public Task
 };
 int main()
 {
-				ThreadPool *pool = new ThreadPool(10);
+				ThreadPool *pool = new ThreadPool(100);
 				sleep(2);
 				while(1)
 				{

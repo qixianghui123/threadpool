@@ -11,6 +11,7 @@ ThreadPool::ThreadPool(int thread_num)
 				pthread_mutex_init(&m_idle_mutex, NULL);
 				pthread_mutex_init(&m_busy_mutex, NULL);
 				m_thread_num = thread_num;
+				m_tid = new pthread_t[m_thread_num];
 				Create();
 }
 
@@ -19,7 +20,6 @@ ThreadPool::~ThreadPool()
 
 void ThreadPool::Create()
 {
-				m_tid = new pthread_t[m_thread_num];
 				for(int i=0; i<m_thread_num; i++)
 				{
 								pthread_create(&m_tid[i], NULL, routine, (void *)this);
@@ -48,11 +48,11 @@ void* ThreadPool::routine(void *s)
 								}
 								vector<Task*>::iterator it = m_task_v.begin();
 								Task *task = *it;
-								if(it != m_task_v.end())
-								{
-												task = *it;
-												m_task_v.erase(it);
-								}
+								//if(it != m_task_v.end())
+								//{
+								//				task = *it;
+								m_task_v.erase(it);
+								//}
 								pthread_mutex_unlock(&m_mutex);
 								task->run();
 								delete task;
@@ -102,12 +102,12 @@ void ThreadPool::MoveToBusyList()
 {
 				while(m_busy_list.size()>=m_thread_num)
 				{
-								        usleep(10);
+								usleep(10);
 				}
 
 				while(m_idle_list.size()<=0)
 				{
-								        usleep(10);
+								usleep(10);
 				}
 
 				pthread_mutex_lock(&m_idle_mutex);
